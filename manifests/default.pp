@@ -15,11 +15,26 @@ class php {
   package { "php5":
     ensure  => present,
   }
+  #package { "libapache2-mod-php5":
+  #  ensure => present,
+  #}
   package { "php5-cli":
     ensure  => present,
   }
   package { "php5-mysql":
     ensure  => present,
+  }
+  package { "libaugeas-ruby":
+    ensure => present,
+  }
+  # php.ini config
+  augeas { 'php_dev_config':
+    #context => '/files/etc/php5/cli/php.ini',
+    changes => [
+      'set /files/etc/php5/cli/php.ini/max_execution_time 60',
+    ],
+    require => Package['php5'],
+    #notify => Exec['reload apache']
   }
 }
 class mysql {
